@@ -10,7 +10,8 @@ const router = express.Router();
 
 router
     .route("/employee")
-    .get(validatorAuth.checkAdmin, controller.getAllEmployees)
+    .get(//validatorAuth.checkAdmin, 
+        controller.getAllEmployees)
     .post(employeeValidator, validatorAuth.checkAdmin, validator, controller.addEmployee);
 
 

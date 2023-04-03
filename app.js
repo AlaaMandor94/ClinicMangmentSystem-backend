@@ -50,7 +50,7 @@ app.use(morgan("dev"));
 app.use(cors());
 //2)Routes Middle ware.......
 app.use(authRoute);
-app.use(authMW);
+// app.use(authMW);
 app.use(employeeRoute);
 app.use(prescriptionRote);
 app.use(appointmentRoute);
