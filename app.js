@@ -1,11 +1,11 @@
-const path = require('path')
+const path = require("path");
 const express = require("express");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const app = express();
-const morgan = require('morgan');
-const cors = require('cors');
+const morgan = require("morgan");
+const cors = require("cors");
 
-// routes 
+// routes
 const employeeRoute = require("./Routes/employeeRoute");
 const prescriptionRote = require("./Routes/prescriptionRoute");
 const appointmentRoute = require("./Routes/appointmentRoute");
@@ -18,33 +18,31 @@ const authMW = require("./Middelwares/authValidation");
 const invoiceRouter = require("./Routes/invoiceRoute");
 const paymentRouter = require("./Routes/paymentRoute");
 const reportsRouter = require("./Routes/reportsRoute");
+const invoiceDataRouter = require("./Routes/invoiceDataRoute");
 
-
-require("dotenv").config()
+require("dotenv").config();
 
 // connecting DB ........
-console.log(process.env.DB_URL)
-const DB_URL = process.env.DB_URL
+console.log(process.env.DB_URL);
+const DB_URL = process.env.DB_URL;
 
 let port = process.env.PORT || 3000;
 mongoose.set("strictQuery", true);
-mongoose.connect(DB_URL)
-    .then(() => {
-        console.log("DB Connected ...");
-        app.listen(port, () => {
-            console.log("I am listening..............", port);
-        });
-
-    }).catch(error => {
-        console.log("Bb Problem" + error);
-    })
-
-
-
+mongoose
+  .connect(DB_URL)
+  .then(() => {
+    console.log("DB Connected ...");
+    app.listen(port, () => {
+      console.log("I am listening..............", port);
+    });
+  })
+  .catch((error) => {
+    console.log("Bb Problem" + error);
+  });
 
 //1) Middle ware.......
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(cors());
@@ -61,11 +59,12 @@ app.use(patientRouter);
 app.use(invoiceRouter);
 app.use(paymentRouter);
 app.use(reportsRouter);
+app.use(invoiceDataRouter);
 //Not Found MiddleWare
 app.use((request, response, next) => {
-    response.status(404).send("page not found")
+  response.status(404).send("page not found");
 });
 // Error MiddleWare
 app.use((error, request, response, next) => {
-    response.status(500).json({ message: "Error " + error });
+  response.status(500).json({ message: "Error " + error });
 });
