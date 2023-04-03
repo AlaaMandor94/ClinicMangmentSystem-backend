@@ -138,3 +138,22 @@ exports.getPrescriptionByDoctorId = (request, response, next) => {
       next(error);
     });
 };
+
+// get prescription by patient id
+exports.getPrescriptionByPatientId = (request, response, next) => {
+  prescriptionSchema
+    .find({ patientId: request.params.id })
+    .populate({ path: "doctorId", select: ["firstName", "lastName"] })
+    .populate({ path: "clinicId", select: ["name", "department", "address", "telephoneNumber"] })
+    .populate({ path: "medicineId", select: { name: 1 } })
+    .then((result) => {
+      if (result != null) {
+        response.status(200).json(result);
+      } else {
+        next(new Error("Prescription doesn't exist for this patient"));
+      }
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
