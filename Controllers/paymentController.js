@@ -62,11 +62,6 @@ exports.pay = async (request, response, next) => {
     invoice.paymentMethod = "credit";
     await invoice.save();
 
-    const invoiceIndex = patientData.invoices.findIndex((i) => i._id === _id);
-    patientData.invoices[invoiceIndex].totalDue = invoice.totalDue;
-    patientData.invoices[invoiceIndex].status = invoice.status;
-    await patientData.save();
-
     let newPayment = paymentSchema({
       amount: amount,
       card_number: card_number,
