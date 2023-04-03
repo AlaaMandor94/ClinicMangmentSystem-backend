@@ -194,3 +194,19 @@ exports.deleteInvoiceByID = (request, response, next) => {
     })
     .catch((error) => next(error));
 };
+
+exports.getInvoiceByPatientId = (request, response, next) => {
+  InvoiceSchema.find({ patientId: request.params.id })
+    .populate({ path: "doctorId", select: ["firstName", "lastName"] })
+    .populate({ path: "clinicId", select: ["name"] })
+    .then((result) => {
+      if (result != null) {
+        response.status(200).json(result);
+      } else {
+        next(new Error("Invoice doesn't exist for this patient"));
+      }
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
