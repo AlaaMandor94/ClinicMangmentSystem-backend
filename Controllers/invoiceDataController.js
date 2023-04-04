@@ -1,7 +1,7 @@
 const { request, response } = require("express");
 const { Result } = require("express-validator");
 const mongoose = require("mongoose");
-require("./../Models/InvoiceDataModel");
+require("./../Models/invoiceDataModel");
 const invoiceDataSchema = mongoose.model("invoiceData");
 
 // export all data about invoiceData
