@@ -2,6 +2,8 @@ const { error } = require("console");
 const { request, response } = require("express");
 const { Result } = require("express-validator");
 const mongoose = require("mongoose");
+require("../Models/emailModel");
+const emailSchema = mongoose.model("email");
 require("../Models/employeeModel");
 const employeeSchema = mongoose.model("employee");
 const jwt = require("jsonwebtoken");
@@ -45,10 +47,7 @@ exports.getAllEmployees = async (request, response, next) => {
   });
   // including mongo operators
   let queryString = JSON.stringify(reqQuery);
-  queryString = queryString.replace(
-    /\b(gt|gte|lt|lte|in)\b/g,
-    (match) => `$${match}`
-  );
+  queryString = queryString.replace(/\b(gt|gte|lt|lte|in)\b/g, (match) => `$${match}`);
   // select
   if (request.query.select) {
     feilds = request.query.select.split(",").join(" ");
@@ -61,7 +60,7 @@ exports.getAllEmployees = async (request, response, next) => {
   }
   await employeeSchema
     .find(JSON.parse(queryString))
-    .populate({ path: "clinicId" })
+    .populate({ path: "clinicId", select: ["name", "department", "address", "telephoneNumber"] })
     .select(feilds)
     .sort(sortBy)
     .then((result) => {
@@ -75,19 +74,19 @@ exports.getAllEmployees = async (request, response, next) => {
 //adding a new Employee
 exports.addEmployee = async (request, response, next) => {
   if (request.file) {
-    request.body.image = request.file?.filename;
+    request.body.empImage = request.file?.filename;
   }
   let newEmployee = await new employeeSchema({
     firstName: request.body.firstName,
     lastName: request.body.lastName,
     empAge: request.body.empAge,
     empGender: request.body.empGender,
-    empEmail: request.body.empEmail,
-    empPassword: request.body.empPassword,
-    image: request.body.empImage,
+    email: request.body.email,
+    password: request.body.password,
+    empImage: request.body.empImage,
     empSalary: request.body.empSalary,
     empPhone: request.body.empPhone,
-    clinicId: request.body.clinicid,
+    clinicId: request.body.clinicId,
     role: request.body.role,
     address: {
       city: request.body.address.city,
@@ -98,9 +97,7 @@ exports.addEmployee = async (request, response, next) => {
   newEmployee
     .save()
     .then(() => {
-      response
-        .status(201)
-        .json({ success: true, message: "Employee has been added" });
+      response.status(201).json({ success: true, message: "Employee has been added" });
     })
     .catch((error) => {
       next(error);
@@ -109,20 +106,24 @@ exports.addEmployee = async (request, response, next) => {
 
 // update employee
 exports.updateEmployee = (request, response, next) => {
-//   if (!request.file) return next();
-//   console.log(request.file);
-
-//   request.body.image = request.file.filename;
-
-  const { id } = request.params;
-  employeeSchema
-    .findByIdAndUpdate(id, request.body, { new: true })
-    .then(() => {
-      response
-        .status(200)
-        .json({ success: true, message: "Employee has been updated" });
-    })
-    .catch((error) => next(error));
+    
+    if (request.file) {
+        request.body.empImage = request.file?.filename;
+    };
+    
+    const { id } = request.params
+    employeeSchema.findByIdAndUpdate(id, request.body, { new: true })
+        .then(() => {
+            response.status(200).json({ success: true, message: "Employee has been updated" });
+        })
+        .catch((error) => next(error));
+        email = request.body.email
+        if(email)
+        {
+          emailSchema.create({
+            email
+        })
+        } 
 };
 
 // delete employee
@@ -130,9 +131,7 @@ exports.deleteEmployee = (request, response, next) => {
   employeeSchema
     .deleteOne({ _id: request.params.id })
     .then(() => {
-      response
-        .status(201)
-        .json({ success: true, message: "Employee has been deleted" });
+      response.status(201).json({ success: true, message: "Employee has been deleted" });
     })
     .catch((error) => next(error));
 };
@@ -141,10 +140,7 @@ exports.deleteEmployee = (request, response, next) => {
 exports.getEmployeeById = (request, response, next) => {
   employeeSchema
     .findOne({ _id: request.params.id })
-    .populate({
-      path: "clinicId",
-      select: ["name", "department", "address", "telephoneNumber"],
-    })
+    .populate({ path: "clinicId", select: ["name", "department", "address", "telephoneNumber"] })
     .then((result) => {
       if (result != null) {
         response.status(200).json(result);

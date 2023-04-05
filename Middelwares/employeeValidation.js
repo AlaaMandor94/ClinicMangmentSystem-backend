@@ -20,10 +20,10 @@ let empValidator = [
     .withMessage("Gender must be Male or Female"),
     body("email").matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).isString().withMessage("Email must be like: myemail@ourearth.com"),
     body("password").isStrongPassword(),
-    body("empImage").isString().withMessage("Upload your message"),
+    body("empImage").optional().isString().withMessage("Upload your image"),
     body("empSalary").isFloat().withMessage("Salary must be Number"),
     body("empPhone").isInt().matches(/^01[0125][0-9]{8}$/).withMessage("Phone Number must be like: 010|011|012|015 xxxxxxxx"),
-    body("clinicid")
+    body("clinicId")
     .isInt()
     .withMessage("Clinic id must be number"),
     body("address").isObject().withMessage("address is an object"),
