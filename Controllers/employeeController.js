@@ -74,8 +74,8 @@ exports.getAllEmployees = async (request, response, next) => {
 
 //adding a new Employee
 exports.addEmployee = async (request, response, next) => {
-  if (!request.file) {
-    request.body.empImage = request.file?.filename;
+  if (request.file) {
+    request.body.image = request.file?.filename;
   }
   let newEmployee = await new employeeSchema({
     firstName: request.body.firstName,
@@ -84,7 +84,7 @@ exports.addEmployee = async (request, response, next) => {
     empGender: request.body.empGender,
     empEmail: request.body.empEmail,
     empPassword: request.body.empPassword,
-    empImage: request.body.empImage,
+    image: request.body.empImage,
     empSalary: request.body.empSalary,
     empPhone: request.body.empPhone,
     clinicId: request.body.clinicid,
@@ -109,31 +109,11 @@ exports.addEmployee = async (request, response, next) => {
 
 // update employee
 exports.updateEmployee = (request, response, next) => {
-  if (!request.file) return next();
-  console.log(request.file);
-  //     //console.log(req.body)
+//   if (!request.file) return next();
+//   console.log(request.file);
 
-  request.body.image = request.file.filename;
-  // employeeSchema
-  //     .updateOne({ _id: request.params.id }, {
-  //         $set: {
-  //             firstName: request.body.firstName,
-  //             lastName: request.body.lastName,
-  //             empAge: request.body.empAge,
-  //             empGender: request.body.empGender,
-  //             empEmail: request.body.empEmail,
-  //             empPassword: request.body.empPassword,
-  //             empImage: request.body.empImage,
-  //             empSalary: request.body.empSalary,
-  //             empPhone: request.body.empPhone,
-  //             clinicId: request.body.clinicid,
-  //             address: {
-  //                 city: request.body.address.city,
-  //                 building: request.body.address.building,
-  //                 street: request.body.address.street
-  //             },
-  //         },
-  //     })
+//   request.body.image = request.file.filename;
+
   const { id } = request.params;
   employeeSchema
     .findByIdAndUpdate(id, request.body, { new: true })

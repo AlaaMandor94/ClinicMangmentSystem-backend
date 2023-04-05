@@ -14,13 +14,13 @@ const empSchema = new mongoose.Schema({
     empGender: { type: String, enum: ["male", "female"] },
     email: { type: String, unique: true, match: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/ },
     password: { type: String, required: true },
-    empImage: { type: String },
+    // empImage: { type: String, default: 'default.jpg' },
     empSalary: { type: Number },
     empPhone: { type: String, unique: true, match: /^01[0125][0-9]{8}$/ },
     clinicId: { type: Number, match: / \d+ /, ref: 'clinic' },
     role: { type: String, require: true, default: 'Employee' },
     address: patientAddress,
-    image: { type: String, default: './../public/uploads/default.jpg' }
+    image: { type: String, default: 'default.jpg' }
 }, { _id: false });
 empSchema.plugin(autoIncrement, { id: 'EmployeeId', inc_field: "_id" });
 
