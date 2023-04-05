@@ -87,7 +87,7 @@ exports.getAllClinic = (request, response, next) => {
 };
 exports.addClinic = async(request, response, next) => {
     let image;
-    if (request.file) {
+    if (!request.file) {
         image = request.file.filename;
     }
     console.log(request.file);
@@ -108,7 +108,7 @@ exports.addClinic = async(request, response, next) => {
 };
 exports.updateClinic = (request, response, next) => {
     let image;
-    if (request.file) {
+    if (!request.file) {
         image = request.file.filename;
     }
     clinicSchema

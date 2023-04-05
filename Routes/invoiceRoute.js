@@ -8,7 +8,8 @@ const router = express.Router();
 
 router
   .route("/invoice")
-  .get(validatorAuth.checkAdminEmployee, controller.getAllInvoices)
+  .get(validatorAuth.checkAdminPatient, 
+    controller.getAllInvoices)
   .post(invoiceValidator, validator, validatorAuth.checkAdminEmployee, controller.addInvoice)
   .patch(body("id").isInt().withMessage("id should be integer"), validator, validatorAuth.checkAdminEmployee, controller.updateInvoice);
 

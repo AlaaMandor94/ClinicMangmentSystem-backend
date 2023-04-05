@@ -9,11 +9,11 @@ const router = express.Router();
 
 router
     .route("/clinic")
-    .get( /*validatorAuth.checkAdminPatient,*/ ClinicController.getAllClinic)
-    .post( /*validatorAuth.checkAdmin, clinicValidator, validator, */ ClinicController.addClinic)
+    .get( ClinicController.getAllClinic)
+    .post( validatorAuth.checkAdmin, clinicValidator, validator,  ClinicController.addClinic)
     .put(validatorAuth.checkAdmin, clinicValidator, validator, ClinicController.updateClinic)
     .delete(validatorAuth.checkAdmin, ClinicController.deleteClinic);
 
-router.get("/clinic/:id", param("id").isInt().withMessage("id should be number"), validator, validatorAuth.checkAdmin, ClinicController.getClinicID);
+router.get("/clinic/:id", param("id").isInt().withMessage("id should be number"), validator,  ClinicController.getClinicID);
 
 module.exports = router;

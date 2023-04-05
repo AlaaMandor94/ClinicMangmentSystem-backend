@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 const stripe = require("stripe")("sk_test_51MYmKEKRu4D4e0ovwJk7CNhg3Lj1ov5Ox0SBPQIYwxCrXRimvxxi7APbLPIwV6tEDzMXOYbYAe3SY1qOnNrP4pap00DEe6ffec");
 // const stripe = Stripe(process.env.STRIPE_KEY_SECRET);
 const errorResponse = require("../Middelwares/errorValidation");
+require("../Models/patientModel");
 
 const invoiceSchema = require("./../Models/invoiceModel");
-const patientSchema = require("./../Models/patientModel");
+const patientSchema = mongoose.model("patientModel");
 const paymentSchema = require("./../Models/paymentModel");
 
 // Add a new payment
@@ -18,7 +19,8 @@ exports.pay = async (request, response, next) => {
     return response.status(400).send("Amount paid exceeds total due");
   }
 
-  let patientData = await patientSchema.findOne({ _id: invoice.patientId });
+  console.log("This is the patient:",invoice.patientId);
+  let patientData = await patientSchema.findOne({_id: invoice.patientId})
   const card_number = request.body.card_number;
   const exp_month = request.body.exp_month;
   const exp_year = request.body.exp_year;
@@ -59,7 +61,7 @@ exports.pay = async (request, response, next) => {
     invoice.paid += amount;
     invoice.totalDue = invoice.total - invoice.paid;
     invoice.status = invoice.paid === invoice.total ? "paid" : "partial";
-    invoice.paymentMethod = "credit";
+    invoice.paymentMethod = "Credit Card";
     await invoice.save();
 
     let newPayment = paymentSchema({

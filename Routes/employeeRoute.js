@@ -10,7 +10,8 @@ const router = express.Router();
 
 router
     .route("/employee")
-    .get(validatorAuth.checkAdmin, controller.getAllEmployees)
+    .get(validatorAuth.checkAdmin, 
+        controller.getAllEmployees)
     .post(employeeValidator, validatorAuth.checkAdmin, validator, controller.addEmployee);
 
 
@@ -18,13 +19,13 @@ router
 router.patch(
     "/employee/:id",
     param("id").isInt().withMessage("Id should be integer"),
-    validator, validatorAuth.checkAdmin,
+    validator, validatorAuth.checkAdminEmployee,
     controller.uploadEmployeeImg, controller.updateEmployee);
 
 router.get(
     "/employee/:id",
     param("id").isInt().withMessage("Id should be integer"),
-    validatorAuth.checkAdmin,
+    validatorAuth.checkAdminEmployee,
     validator,
     controller.getEmployeeById
 );
