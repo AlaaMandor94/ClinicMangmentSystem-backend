@@ -119,7 +119,7 @@ exports.updateClinic = (request, response, next) => {
                 address: request.body.address,
                 doctor: request.body.doctor,
                 telephoneNumber: request.body.telephoneNumber,
-                imgae,
+
             },
         })
         .then((data) => {

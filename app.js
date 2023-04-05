@@ -29,16 +29,16 @@ const DB_URL = process.env.DB_URL;
 let port = process.env.PORT || 3000;
 mongoose.set("strictQuery", true);
 mongoose
-  .connect(DB_URL)
-  .then(() => {
-    console.log("DB Connected ...");
-    app.listen(port, () => {
-      console.log("I am listening..............", port);
+    .connect(DB_URL)
+    .then(() => {
+        console.log("DB Connected ...");
+        app.listen(port, () => {
+            console.log("I am listening..............", port);
+        });
+    })
+    .catch((error) => {
+        console.log("Bb Problem" + error);
     });
-  })
-  .catch((error) => {
-    console.log("Bb Problem" + error);
-  });
 
 //1) Middle ware.......
 app.use(express.json());
@@ -48,7 +48,7 @@ app.use(morgan("dev"));
 app.use(cors());
 //2)Routes Middle ware.......
 app.use(authRoute);
-app.use(authMW);
+//app.use(authMW);
 app.use(employeeRoute);
 app.use(prescriptionRote);
 app.use(appointmentRoute);
@@ -62,9 +62,9 @@ app.use(reportsRouter);
 app.use(invoiceDataRouter);
 //Not Found MiddleWare
 app.use((request, response, next) => {
-  response.status(404).send("page not found");
+    response.status(404).send("page not found");
 });
 // Error MiddleWare
 app.use((error, request, response, next) => {
-  response.status(500).json({ message: "Error " + error });
+    response.status(500).json({ message: "Error " + error });
 });
