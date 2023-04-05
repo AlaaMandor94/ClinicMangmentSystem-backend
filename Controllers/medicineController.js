@@ -16,7 +16,11 @@ const fileStorage = multer.diskStorage({
 });
 
 const fileFilter = (request, file, cb) => {
-  if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mintype === "image/jpeg") {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mintype === "image/jpeg"
+  ) {
     cb(null, true);
   } else {
     cb(new Error("Invalid file type, only JPEG and PNG is allowed!"), false);
@@ -40,7 +44,10 @@ exports.getAllMedicine = (request, response, next) => {
   //create query String
   let queryStr = JSON.stringify(reqQuery);
   // create operator
-  queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, (match) => `$${match}`);
+  queryStr = queryStr.replace(
+    /\b(gt|gte|lt|lte|in)\b/g,
+    (match) => `$${match}`
+  );
   //find resource
   query = medicineSchema.find(JSON.parse(queryStr));
   //select field
@@ -74,7 +81,7 @@ exports.addMedicine = async (request, response, next) => {
     productionDate: request.body.productionDate,
     companyName: request.body.companyName,
     price: request.body.price,
-    image,
+    image: request.file.filename,
     quantity: request.body.quantity,
     offer: request.body.offer,
   });
@@ -103,7 +110,7 @@ exports.updateMedicine = (request, response, next) => {
           productionDate: request.body.productionDate,
           companyName: request.body.companyName,
           price: request.body.price,
-          image,
+          image: request.filename.filename,
           quantity: request.body.quantity,
           offer: request.body.offer,
         },

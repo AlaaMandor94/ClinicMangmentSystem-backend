@@ -7,7 +7,7 @@ const router = express.Router();
 
 router
   .route("/medicine")
-  .get(validatorAuth.checkAdminDoctor,medicineController.getAllMedicine)
+  .get(/*validatorAuth.checkAdminDoctor,*/ medicineController.getAllMedicine)
   .post(
     [
       body("name").isString().withMessage("name should be string"),
@@ -19,12 +19,15 @@ router
         .withMessage("Company Name Should Be String"),
       body("price").isFloat().withMessage("Price Should Be Number"),
     ],
-    validatorAuth.checkAdminDoctor,
-    validator,
+    medicineController.uploadMedincineImg,
+    // validatorAuth.checkAdminDoctor,
+    // validator,
     medicineController.addMedicine
   )
-  .put(validatorAuth.checkAdminDoctor,medicineController.updateMedicine)
-  .delete(validatorAuth.checkAdminDoctor,medicineController.deleteMedicine);
+  .put(validatorAuth.checkAdminDoctor, medicineController.updateMedicine)
+  .delete(
+    /*validatorAuth.checkAdminDoctor,*/ medicineController.deleteMedicine
+  );
 
 router.get(
   "/medicine/:id",

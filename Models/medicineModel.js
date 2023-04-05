@@ -23,8 +23,23 @@ const medicineSchema = new mongoose.Schema({
   },
   companyName: { type: String, required: true },
   price: { type: Number, required: true },
-  image: { type: String, require: true },
+  image: {
+    type: String,
+    require: true,
+    default: "./../public/img/doctor/default.jpg",
+  },
 });
-
+medicineSchema.post("save", (med) => {
+  if (med.image) {
+    const imgageUrl = `${process.env.BaseUrl}/img/medicine/${med.image}`;
+    med.image = imgageUrl;
+  }
+});
+medicineSchema.post("init", (med) => {
+  if (med.image) {
+    const imgageUrl = `${process.env.BaseUrl}/img/medicine/${med.image}`;
+    med.image = imgageUrl;
+  }
+});
 medicineSchema.plugin(autoIncrement, { id: "medicine_id", inc_field: "_id" });
 module.exports = mongoose.model("medicine", medicineSchema);
