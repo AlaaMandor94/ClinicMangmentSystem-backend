@@ -78,7 +78,7 @@ exports.getAllClinic = (request, response, next) => {
       //select: ["firstName", "lastName", "email", "age", "gender"],
     })
     .then((data) => {
-      response.status(200).json({ message: "All Clinic", data });
+      response.status(200).json(data);
     })
     .catch((error) => {
       next(error);
@@ -100,7 +100,7 @@ exports.addClinic = async (request, response, next) => {
   });
   ClinicObject.save()
     .then((data) => {
-      response.status(201).json({ message: "add new clinic", data: data });
+      response.status(201).json(data);
     })
     .catch((error) => {
       next(error);
@@ -164,10 +164,7 @@ exports.getClinicID = async (request, response, next) => {
       },
       //select: ["firstName", "lastName", "email", "age", "gender"],
     });
-    response.status(201).json({
-      status: "successed",
-      data: clinic,
-    });
+    response.status(201).json(clinic);
   } catch (error) {
     next(error);
   }

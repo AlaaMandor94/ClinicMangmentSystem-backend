@@ -26,7 +26,7 @@ router.get(
   "/clinic/:id",
   param("id").isInt().withMessage("id should be number"),
   validator,
-  validatorAuth.checkAdmin,
+
   ClinicController.getClinicID
 );
 

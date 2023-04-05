@@ -47,14 +47,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(cors());
 //2)Routes Middle ware.......
+app.use(clinicRouter);
+app.use(medicineRouter);
+
 app.use(authRoute);
 app.use(authMW);
 app.use(employeeRoute);
 app.use(prescriptionRote);
 app.use(appointmentRoute);
 app.use(doctorsRoute);
-app.use(clinicRouter);
-app.use(medicineRouter);
 app.use(patientRouter);
 app.use(invoiceRouter);
 app.use(paymentRouter);
