@@ -103,6 +103,14 @@ const doctorSchema = new mongoose.Schema({
         enum: ['male', 'female'],
         required: true
     },
+    degrees: {
+        type: String,
+
+    },
+    location: {
+        type: String,
+
+    },
     clinic: {
         type: Number,
         ref: 'clinic'

@@ -92,11 +92,7 @@ exports.getAllDoctors = async(req, res, next) => {
 
         // Excute Query
         const doctors = await query;
-        res.status(200).json([{
-            status: "success",
-            result: doctors.length,
-            data: [doctors]
-        }])
+        res.status(200).json(doctors)
     } catch (error) {
         next(error)
     }
@@ -127,12 +123,10 @@ exports.addNewDoctor = async(req, res, next) => {
         if (req.file) {
             req.body.image = req.file.filename
         };
-        // console.log(req.file)
-        // console.log(req.params)
 
         const { clinic } = req.body
-        console.log(req.body)
-        console.log(clinic)
+        console.log("BodyValue =", req.body)
+        console.log("clicin _id=", clinic)
         const exsistingClinci = await clinicSchema.findOne({ _id: clinic })
         console.log("exsistingClinci =", exsistingClinci)
         if (!exsistingClinci) {
