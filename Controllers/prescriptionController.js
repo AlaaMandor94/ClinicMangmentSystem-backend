@@ -30,7 +30,7 @@ exports.getAllPrescription = async (request, response, next) => {
   await prescriptionSchema
     .find(JSON.parse(queryString))
     .populate({ path: "doctorId", select: ["firstName", "lastName"] })
-    .populate({ path: "patientId", select: ["lastName", "Fname", "Lname", "Age"] })
+    .populate({ path: "patientId", select: ["fname", "lname", "age"] })
     .populate({ path: "clinicId", select: ["name", "department", "address", "telephoneNumber"] })
     .populate({ path: "medicineId", select: { name: 1 } })
     .select(feilds)
@@ -100,7 +100,7 @@ exports.getPrescriptionById = (request, response, next) => {
     .populate({ path: "doctorId", select: ["firstName", "lastName"] })
     .populate({
       path: "patientId",
-      select: ["lastName", "Fname", "Lname", "Age"],
+      select: ["fname", "lname", "age"],
     })
     .populate({
       path: "clinicId",
