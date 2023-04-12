@@ -24,7 +24,7 @@ router
     // validator,
     medicineController.addMedicine
   )
-  .put(validatorAuth.checkAdminDoctor, medicineController.updateMedicine)
+  .put(/*validatorAuth.checkAdminDoctor,*/ medicineController.updateMedicine)
   .delete(
     /*validatorAuth.checkAdminDoctor,*/ medicineController.deleteMedicine
   );
@@ -32,8 +32,8 @@ router
 router.get(
   "/medicine/:id",
   param("id").isInt().withMessage("Id Should Be Number"),
-  validatorAuth.checkAdminDoctor,
-  validator,
+  // validatorAuth.checkAdminDoctor,
+  // validator,
   medicineController.getMedicineBYID
 );
 

@@ -28,6 +28,7 @@ const medicineSchema = new mongoose.Schema({
     require: true,
     default: "./../public/img/doctor/default.jpg",
   },
+  offer: { type: Number, required: true },
 });
 medicineSchema.post("save", (med) => {
   if (med.image) {
